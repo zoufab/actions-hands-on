@@ -33,7 +33,7 @@ jobs:
     needs: build
     steps:
     - name: Run Test
-      run: mvn test
+      run: mvn test --file actions/pom.xml
     
   package:
     runs-on: ubuntu-latest
