@@ -32,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+    - run: pwd
+    - run: ls -al
     - name: Run Test
       run: mvn test --file actions/pom.xml
     
