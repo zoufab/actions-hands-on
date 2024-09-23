@@ -16,9 +16,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -29,13 +27,25 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file actions/pom.xml
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
     - name: Run Test
       run: mvn --batch-mode --update-snapshots verify --file actions/pom.xml
-    - run: mkdir staging && cp actions/target/*.jar staging
+    
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Run packaging
+      run: mkdir staging && cp actions/target/*.jar staging
     - uses: actions/upload-artifact@v4
       with:
         name: Package
         path: staging
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
