@@ -15,7 +15,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -25,20 +25,19 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Run Test
+      run: mvn --batch-mode --update-snapshots verify --file actions/pom.xml
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
     - name: Build with Maven
       run: mvn -B package --file actions/pom.xml
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - run: pwd && cd actions && ls -al 
-    - name: Run Test
-      run: mvn test --file actions/pom.xml
     
   package:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     steps:
     - name: Run packaging
       run: mkdir staging && cp actions/target/*.jar staging
