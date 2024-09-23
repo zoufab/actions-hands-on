@@ -33,7 +33,7 @@ jobs:
     needs: build
     steps:
     - name: Run Test
-      run: mvn --batch-mode --update-snapshots verify --file ../actions/pom.xml
+      run: mvn --batch-mode --update-snapshots verify --file **/pom.xml
     
   package:
     runs-on: ubuntu-latest
