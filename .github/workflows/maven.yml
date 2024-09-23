@@ -31,7 +31,7 @@ jobs:
       run: mvn -B package --file actions/pom.xml
     - name: Run Test
       run: mvn --batch-mode --update-snapshots verify --file actions/pom.xml
-    - run: mkdir staging && cp target/*.jar staging
+    - run: mkdir staging && cp actions/target/*.jar staging
     - uses: actions/upload-artifact@v4
       with:
         name: Package
